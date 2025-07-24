@@ -142,6 +142,11 @@ export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: S
         </div>
       </div>
 
+      {activeSessions.length > 0 && (
+        <Card className="bg-accent/10 border-accent">
+          <CardContent className="pt-6">
+            <div className="text-center space-y-2">
+              <h3 className="font-semibold text-accent-foreground">Ready to Debug!</h3>
               <span className="text-muted-foreground">
                 Click "Chat" on your active sessions to start debugging with your duck.
               </span>
@@ -150,12 +155,6 @@ export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: S
         </Card>
       )}
 
-      <Tabs defaultValue="upcoming" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="upcoming" className="text-xs sm:text-sm">
-            <span className="hidden sm:inline">Upcoming ({upcomingSessions.length})</span>
-            <span className="sm:hidden">Up ({upcomingSessions.length})</span>
-          </TabsTrigger>
       <Tabs defaultValue="upcoming" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="upcoming" className="text-xs sm:text-sm">
@@ -176,6 +175,9 @@ export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: S
           {upcomingSessions.length === 0 ? (
             <Card>
               <CardContent className="text-center py-8">
+                <p className="text-muted-foreground">No upcoming sessions.</p>
+              </CardContent>
+            </Card>
           ) : (
             upcomingSessions.map(renderSession)
           )}
@@ -213,16 +215,16 @@ export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: S
               Chat with {chatSession?.duckName}
             </DialogTitle>
           </DialogHeader>
-        <DialogContent className="max-w-4xl h-[90vh] sm:h-[80vh] w-[95vw] sm:w-auto flex flex-col p-0">
-          <DialogHeader className="p-4 pb-2 border-b">
-            <DialogTitle className="text-base sm:text-lg">
+          <div className="flex-1 min-h-0 p-4">
+            {chatSession && (
+              <ChatInterface
                 session={chatSession}
                 onUpdateSession={handleUpdateChatSession}
               />
-          <div className="flex-1 min-h-0 p-4">
+            )}
           </div>
         </DialogContent>
       </Dialog>
     </div>
   )
-}}
+}
