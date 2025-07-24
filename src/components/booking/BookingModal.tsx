@@ -31,7 +31,7 @@ export function BookingModal({ duck, sessionType, isOpen, onClose, onConfirm }: 
 
   const getSessionTypePrice = (type: SessionType) => {
     const multiplier = type === 'career' ? 1.2 : type === 'existential' ? 0.8 : 1
-    return Math.round(duck.hourlyRate * multiplier)
+    return Math.round(duck.hourlyRate * duck.mood.priceModifier * multiplier)
   }
 
   const totalCost = getSessionTypePrice(sessionType) * parseInt(duration || '1')
@@ -182,7 +182,14 @@ export function BookingModal({ duck, sessionType, isOpen, onClose, onConfirm }: 
           <div className="border-t pt-4">
             <div className="flex justify-between items-center mb-4">
               <span className="text-muted-foreground">Total Cost:</span>
-              <span className="text-xl sm:text-2xl font-bold text-primary">${totalCost}</span>
+              <div className="text-right">
+                <span className="text-xl sm:text-2xl font-bold text-primary">${totalCost}</span>
+                {duck.mood.priceModifier !== 1.0 && (
+                  <div className="text-xs text-muted-foreground">
+                    {duck.mood.priceModifier < 1.0 ? "Discount applied!" : "Premium pricing"}
+                  </div>
+                )}
+              </div>
             </div>
             
             <Button 

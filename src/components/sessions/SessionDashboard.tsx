@@ -1,17 +1,22 @@
+import { useState } from 'react'
 import { Session } from '../../types/duck'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
-import { Calendar, Clock, DollarSign, User } from '@phosphor-icons/react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
+import { Calendar, Clock, DollarSign, User, MessageCircle } from '@phosphor-icons/react'
 import { format } from 'date-fns'
+import { ChatInterface } from '../chat/ChatInterface'
 
 interface SessionDashboardProps {
   sessions: Session[]
   onJoinSession: (session: Session) => void
+  onUpdateSession?: (session: Session) => void
 }
 
-export function SessionDashboard({ sessions, onJoinSession }: SessionDashboardProps) {
+export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: SessionDashboardProps) {
+  const [chatSession, setChatSession] = useState<Session | null>(null)
   const upcomingSessions = sessions.filter(s => s.status === 'upcoming')
   const activeSessions = sessions.filter(s => s.status === 'active')
   const completedSessions = sessions.filter(s => s.status === 'completed')
@@ -22,6 +27,18 @@ export function SessionDashboard({ sessions, onJoinSession }: SessionDashboardPr
       case 'career': return 'bg-green-500'
       case 'existential': return 'bg-purple-500'
     }
+  }
+
+  const handleJoinSession = (session: Session) => {
+    // Start the session and open chat
+    const updatedSession = { ...session, status: 'active' as const }
+    onUpdateSession?.(updatedSession)
+    setChatSession(updatedSession)
+    onJoinSession(updatedSession)
+  }
+
+  const handleChatSession = (session: Session) => {
+    setChatSession(session)
   }
 
   const getSessionTypeLabel = (type: Session['type']) => {
@@ -73,19 +90,31 @@ export function SessionDashboard({ sessions, onJoinSession }: SessionDashboardPr
 
           <div className="flex justify-end gap-2">
             {session.status === 'upcoming' && (
-              <Button size="sm" onClick={() => onJoinSession(session)} className="text-xs sm:text-sm">
+              <Button size="sm" onClick={() => handleJoinSession(session)} className="text-xs sm:text-sm">
                 Join Session
               </Button>
             )}
             {session.status === 'active' && (
-              <Button size="sm" variant="destructive" className="text-xs sm:text-sm">
-                End Session
-              </Button>
+              <>
+                <Button size="sm" variant="outline" onClick={() => handleChatSession(session)} className="text-xs sm:text-sm">
+                  <MessageCircle size={14} className="mr-1" />
+                  Chat
+                </Button>
+                <Button size="sm" variant="destructive" className="text-xs sm:text-sm">
+                  End Session
+                </Button>
+              </>
             )}
             {session.status === 'completed' && (
-              <Button size="sm" variant="outline" className="text-xs sm:text-sm">
-                View Details
-              </Button>
+              <>
+                <Button size="sm" variant="outline" onClick={() => handleChatSession(session)} className="text-xs sm:text-sm">
+                  <MessageCircle size={14} className="mr-1" />
+                  Review Chat
+                </Button>
+                <Button size="sm" variant="outline" className="text-xs sm:text-sm">
+                  View Details
+                </Button>
+              </>
             )}
           </div>
         </div>
@@ -157,6 +186,24 @@ export function SessionDashboard({ sessions, onJoinSession }: SessionDashboardPr
           )}
         </TabsContent>
       </Tabs>
+
+      <Dialog open={!!chatSession} onOpenChange={() => setChatSession(null)}>
+        <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle>
+              Chat with {chatSession?.duckName}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex-1 min-h-0">
+            {chatSession && (
+              <ChatInterface
+                session={chatSession}
+                onUpdateSession={handleUpdateChatSession}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

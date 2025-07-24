@@ -12,6 +12,27 @@ export interface Duck {
   description: string
   experience: string
   favoriteProblems: string[]
+  mood: DuckMood
+  chatPersonality: ChatPersonality
+}
+
+export interface DuckMood {
+  current: 'happy' | 'focused' | 'grumpy' | 'excited' | 'sleepy'
+  priceModifier: number // 0.8 to 1.3 multiplier
+  availabilityBonus: boolean // affects availability chances
+  lastUpdated: string
+}
+
+export interface ChatPersonality {
+  greeting: string
+  debuggingStyle: string
+  catchPhrases: string[]
+  responsePatterns: {
+    encouragement: string[]
+    confusion: string[]
+    success: string[]
+    frustration: string[]
+  }
 }
 
 export interface Session {
@@ -24,6 +45,15 @@ export interface Session {
   status: 'upcoming' | 'active' | 'completed'
   notes?: string
   cost: number
+  chatHistory?: ChatMessage[]
+}
+
+export interface ChatMessage {
+  id: string
+  sender: 'user' | 'duck'
+  content: string
+  timestamp: string
+  type?: 'greeting' | 'debugging' | 'encouragement' | 'success'
 }
 
 export type SessionType = 'debugging' | 'career' | 'existential'

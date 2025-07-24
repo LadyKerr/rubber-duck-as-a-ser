@@ -2,7 +2,7 @@ import { Duck } from '../../types/duck'
 import { Card, CardContent } from '../ui/card'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
-import { Star, MapPin, Clock } from '@phosphor-icons/react'
+import { Star, MapPin } from '@phosphor-icons/react'
 
 interface DuckCardProps {
   duck: Duck
@@ -15,6 +15,17 @@ export function DuckCard({ duck, onSelect }: DuckCardProps) {
       case 'available': return 'bg-green-500'
       case 'busy': return 'bg-yellow-500'
       case 'offline': return 'bg-gray-500'
+    }
+  }
+
+  const getMoodEmoji = (mood: string) => {
+    switch (mood) {
+      case 'happy': return '😊'
+      case 'focused': return '🎯'
+      case 'grumpy': return '😤'
+      case 'excited': return '🤩'
+      case 'sleepy': return '😴'
+      default: return '🦆'
     }
   }
 
@@ -37,6 +48,10 @@ export function DuckCard({ duck, onSelect }: DuckCardProps) {
             <div className="flex items-center gap-2 mb-2">
               <h3 className="font-semibold text-base md:text-lg truncate">{duck.name}</h3>
               <div className={`w-2 h-2 rounded-full flex-shrink-0 ${getAvailabilityColor(duck.availability)}`} />
+              <Badge variant="outline" className="text-xs flex items-center gap-1">
+                <span>{getMoodEmoji(duck.mood.current)}</span>
+                <span className="capitalize">{duck.mood.current}</span>
+              </Badge>
             </div>
             
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-muted-foreground mb-3">
@@ -70,8 +85,13 @@ export function DuckCard({ duck, onSelect }: DuckCardProps) {
 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-xl md:text-2xl font-bold text-primary">${duck.hourlyRate}</span>
+                <span className="text-xl md:text-2xl font-bold text-primary">${getActualPrice()}</span>
                 <span className="text-sm text-muted-foreground">/hour</span>
+                {duck.mood.priceModifier !== 1.0 && (
+                  <Badge variant={duck.mood.priceModifier < 1.0 ? "default" : "destructive"} className="text-xs">
+                    {duck.mood.priceModifier < 1.0 ? "Discount!" : "Premium"}
+                  </Badge>
+                )}
               </div>
               <div className="flex items-center justify-between sm:justify-end gap-2">
                 <Badge variant={duck.availability === 'available' ? 'default' : 'secondary'} className="text-xs">

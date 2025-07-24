@@ -11,6 +11,7 @@ import { Button } from './components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs'
 import { toast } from 'sonner'
 import { Toaster } from './components/ui/sonner'
+import { useDuckMoodSystem } from './hooks/useDuckMoodSystem'
 
 function App() {
   const [sessions, setSessions] = useKV<Session[]>('user-sessions', [])
@@ -19,6 +20,9 @@ function App() {
   const [showBooking, setShowBooking] = useState(false)
   const [bookingSessionType, setBookingSessionType] = useState<SessionType | null>(null)
   const [activeTab, setActiveTab] = useState('marketplace')
+
+  // Initialize mood system
+  useDuckMoodSystem()
 
   // Filter states
   const [searchQuery, setSearchQuery] = useState('')
@@ -80,8 +84,8 @@ function App() {
     const matchesSpecialty = !specialtyFilter || duck.specialties.includes(specialtyFilter)
     const matchesAvailability = !availabilityFilter || duck.availability === availabilityFilter
     const matchesPrice = !priceRangeFilter || 
-      (duck.hourlyRate >= priceRangeFilter[0] && 
-       (priceRangeFilter[1] === 999 || duck.hourlyRate <= priceRangeFilter[1]))
+      (Math.round(duck.hourlyRate * duck.mood.priceModifier) >= priceRangeFilter[0] && 
+       (priceRangeFilter[1] === 999 || Math.round(duck.hourlyRate * duck.mood.priceModifier) <= priceRangeFilter[1]))
 
     return matchesSearch && matchesSpecialty && matchesAvailability && matchesPrice
   })
@@ -163,6 +167,11 @@ function App() {
             <SessionDashboard 
               sessions={sessions}
               onJoinSession={handleJoinSession}
+              onUpdateSession={(updatedSession) => {
+                setSessions((currentSessions) => 
+                  currentSessions.map(s => s.id === updatedSession.id ? updatedSession : s)
+                )
+              }}
             />
           </TabsContent>
         </Tabs>
