@@ -69,12 +69,12 @@ export function DuckFilters({
           />
         </div>
         
-        <Select value={activeFilters.specialty || ''} onValueChange={(value) => onFilterSpecialty(value || null)}>
+        <Select value={activeFilters.specialty || 'all-specialties'} onValueChange={(value) => onFilterSpecialty(value === 'all-specialties' ? null : value)}>
           <SelectTrigger className="w-48">
             <SelectValue placeholder="Specialty" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Specialties</SelectItem>
+            <SelectItem value="all-specialties">All Specialties</SelectItem>
             {specialties.map((specialty) => (
               <SelectItem key={specialty} value={specialty}>
                 {specialty}
@@ -83,12 +83,12 @@ export function DuckFilters({
           </SelectContent>
         </Select>
 
-        <Select value={activeFilters.availability || ''} onValueChange={(value) => onFilterAvailability(value as Duck['availability'] || null)}>
+        <Select value={activeFilters.availability || 'all-status'} onValueChange={(value) => onFilterAvailability(value === 'all-status' ? null : value as Duck['availability'])}>
           <SelectTrigger className="w-32">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Status</SelectItem>
+            <SelectItem value="all-status">All Status</SelectItem>
             <SelectItem value="available">Available</SelectItem>
             <SelectItem value="busy">Busy</SelectItem>
             <SelectItem value="offline">Offline</SelectItem>
@@ -96,13 +96,13 @@ export function DuckFilters({
         </Select>
 
         <Select 
-          value={activeFilters.priceRange ? `${activeFilters.priceRange[0]}-${activeFilters.priceRange[1]}` : ''} 
+          value={activeFilters.priceRange ? `${activeFilters.priceRange[0]}-${activeFilters.priceRange[1]}` : 'all-prices'} 
           onValueChange={(value) => {
-            if (value) {
+            if (value === 'all-prices') {
+              onFilterPriceRange(null)
+            } else {
               const range = priceRanges.find(r => `${r.value[0]}-${r.value[1]}` === value)
               onFilterPriceRange(range?.value || null)
-            } else {
-              onFilterPriceRange(null)
             }
           }}
         >
@@ -110,7 +110,7 @@ export function DuckFilters({
             <SelectValue placeholder="Price" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Prices</SelectItem>
+            <SelectItem value="all-prices">All Prices</SelectItem>
             {priceRanges.map((range) => (
               <SelectItem key={`${range.value[0]}-${range.value[1]}`} value={`${range.value[0]}-${range.value[1]}`}>
                 {range.label}
