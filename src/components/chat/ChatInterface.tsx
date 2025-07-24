@@ -162,40 +162,40 @@ export function ChatInterface({ session, onUpdateSession }: ChatInterfaceProps) 
   }
 
   return (
-    <Card className="h-full flex flex-col">
-      <CardHeader className="flex-shrink-0 pb-3">
-        <CardTitle className="flex items-center justify-between">
+    <Card className="h-full flex flex-col max-h-[70vh] sm:max-h-none">
+      <CardHeader className="flex-shrink-0 pb-3 px-3 sm:px-6">
+        <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div className="flex items-center gap-2">
-            <MessageCircle />
-            <span>Chat with {duck.name}</span>
-            <span className="text-2xl">{duck.image}</span>
+            <MessageCircle size={18} />
+            <span className="text-sm sm:text-base">Chat with {duck.name}</span>
+            <span className="text-xl sm:text-2xl">{duck.image}</span>
           </div>
-          <Badge variant="secondary" className="flex items-center gap-1">
+          <Badge variant="secondary" className="flex items-center gap-1 self-start sm:self-auto">
             <span>{getMoodEmoji(duck.mood.current)}</span>
-            <span className="capitalize">{duck.mood.current}</span>
+            <span className="capitalize text-xs">{duck.mood.current}</span>
           </Badge>
         </CardTitle>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs sm:text-sm text-muted-foreground">
           {duck.personality} • {duck.chatPersonality.debuggingStyle}
         </p>
       </CardHeader>
 
-      <CardContent className="flex-1 flex flex-col min-h-0 p-4 pt-0">
-        <ScrollArea ref={scrollAreaRef} className="flex-1 pr-4">
-          <div className="space-y-4">
+      <CardContent className="flex-1 flex flex-col min-h-0 p-3 sm:p-4 pt-0">
+        <ScrollArea ref={scrollAreaRef} className="flex-1 pr-2 sm:pr-4">
+          <div className="space-y-3 sm:space-y-4">
             {chatHistory.map((msg) => (
               <div
                 key={msg.id}
                 className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-lg p-3 ${
+                  className={`max-w-[85%] sm:max-w-[80%] rounded-lg p-2 sm:p-3 ${
                     msg.sender === 'user'
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted'
                   }`}
                 >
-                  <p className="text-sm">{msg.content}</p>
+                  <p className="text-xs sm:text-sm">{msg.content}</p>
                   <p className="text-xs opacity-70 mt-1">
                     {new Date(msg.timestamp).toLocaleTimeString()}
                   </p>
@@ -205,7 +205,7 @@ export function ChatInterface({ session, onUpdateSession }: ChatInterfaceProps) 
             
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-muted rounded-lg p-3 max-w-[80%]">
+                <div className="bg-muted rounded-lg p-2 sm:p-3 max-w-[85%] sm:max-w-[80%]">
                   <div className="flex items-center gap-1">
                     <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
                     <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -218,21 +218,22 @@ export function ChatInterface({ session, onUpdateSession }: ChatInterfaceProps) 
           </div>
         </ScrollArea>
 
-        <div className="flex gap-2 mt-4 pt-4 border-t">
+        <div className="flex gap-2 mt-3 sm:mt-4 pt-3 sm:pt-4 border-t">
           <Input
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder={`Message ${duck.name}...`}
             disabled={isTyping}
-            className="flex-1"
+            className="flex-1 text-sm"
           />
           <Button 
             onClick={sendMessage} 
             disabled={!message.trim() || isTyping}
             size="icon"
+            className="min-w-[40px] min-h-[40px]"
           >
-            <Send size={16} />
+            <Send size={14} className="sm:w-4 sm:h-4" />
           </Button>
         </div>
       </CardContent>

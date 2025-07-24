@@ -41,6 +41,17 @@ export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: S
     setChatSession(session)
   }
 
+  const handleUpdateChatSession = (updatedSession: Session) => {
+    onUpdateSession?.(updatedSession)
+    setChatSession(updatedSession)
+  }
+
+  const handleEndSession = (session: Session) => {
+    const completedSession = { ...session, status: 'completed' as const }
+    onUpdateSession?.(completedSession)
+    setChatSession(null)
+  }
+
   const getSessionTypeLabel = (type: Session['type']) => {
     switch (type) {
       case 'debugging': return 'Debug'
@@ -100,7 +111,7 @@ export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: S
                   <MessageCircle size={14} className="mr-1" />
                   Chat
                 </Button>
-                <Button size="sm" variant="destructive" className="text-xs sm:text-sm">
+                <Button size="sm" variant="destructive" onClick={() => handleEndSession(session)} className="text-xs sm:text-sm">
                   End Session
                 </Button>
               </>
@@ -130,6 +141,20 @@ export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: S
           {sessions.length} total sessions
         </div>
       </div>
+
+      {activeSessions.length > 0 && (
+        <Card className="border-accent bg-accent/5">
+          <CardContent className="pt-4">
+            <div className="flex items-center gap-2 text-sm">
+              <MessageCircle size={16} className="text-accent" />
+              <span className="font-medium">💬 Chat Available!</span>
+              <span className="text-muted-foreground">
+                Click "Chat" on your active sessions to start debugging with your duck.
+              </span>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Tabs defaultValue="upcoming" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
@@ -188,13 +213,13 @@ export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: S
       </Tabs>
 
       <Dialog open={!!chatSession} onOpenChange={() => setChatSession(null)}>
-        <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
-          <DialogHeader>
-            <DialogTitle>
+        <DialogContent className="max-w-4xl h-[90vh] sm:h-[80vh] w-[95vw] sm:w-auto flex flex-col p-0">
+          <DialogHeader className="p-4 pb-2 border-b">
+            <DialogTitle className="text-base sm:text-lg">
               Chat with {chatSession?.duckName}
             </DialogTitle>
           </DialogHeader>
-          <div className="flex-1 min-h-0">
+          <div className="flex-1 min-h-0 p-4">
             {chatSession && (
               <ChatInterface
                 session={chatSession}

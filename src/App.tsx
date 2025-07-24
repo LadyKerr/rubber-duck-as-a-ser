@@ -14,7 +14,21 @@ import { Toaster } from './components/ui/sonner'
 import { useDuckMoodSystem } from './hooks/useDuckMoodSystem'
 
 function App() {
-  const [sessions, setSessions] = useKV<Session[]>('user-sessions', [])
+  const [sessions, setSessions] = useKV<Session[]>('user-sessions', [
+    // Demo active session to showcase chat interface
+    {
+      id: 'demo-session-1',
+      duckId: '1',
+      duckName: 'Debugbert',
+      type: 'debugging',
+      date: new Date().toISOString(),
+      duration: 1,
+      status: 'active',
+      notes: 'Demo session to test chat interface',
+      cost: 50,
+      chatHistory: []
+    }
+  ])
   const [selectedDuck, setSelectedDuck] = useState<Duck | null>(null)
   const [showProfile, setShowProfile] = useState(false)
   const [showBooking, setShowBooking] = useState(false)
