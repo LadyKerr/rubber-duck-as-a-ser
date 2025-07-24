@@ -142,12 +142,6 @@ export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: S
         </div>
       </div>
 
-      {activeSessions.length > 0 && (
-        <Card className="border-accent bg-accent/5">
-          <CardContent className="pt-4">
-            <div className="flex items-center gap-2 text-sm">
-              <MessageCircle size={16} className="text-accent" />
-              <span className="font-medium">💬 Chat Available!</span>
               <span className="text-muted-foreground">
                 Click "Chat" on your active sessions to start debugging with your duck.
               </span>
@@ -156,6 +150,12 @@ export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: S
         </Card>
       )}
 
+      <Tabs defaultValue="upcoming" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="upcoming" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Upcoming ({upcomingSessions.length})</span>
+            <span className="sm:hidden">Up ({upcomingSessions.length})</span>
+          </TabsTrigger>
       <Tabs defaultValue="upcoming" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="upcoming" className="text-xs sm:text-sm">
@@ -176,12 +176,6 @@ export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: S
           {upcomingSessions.length === 0 ? (
             <Card>
               <CardContent className="text-center py-8">
-                <p className="text-muted-foreground">No upcoming sessions scheduled.</p>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Book a session with one of our amazing ducks!
-                </p>
-              </CardContent>
-            </Card>
           ) : (
             upcomingSessions.map(renderSession)
           )}
@@ -219,16 +213,16 @@ export function SessionDashboard({ sessions, onJoinSession, onUpdateSession }: S
               Chat with {chatSession?.duckName}
             </DialogTitle>
           </DialogHeader>
-          <div className="flex-1 min-h-0 p-4">
-            {chatSession && (
-              <ChatInterface
+        <DialogContent className="max-w-4xl h-[90vh] sm:h-[80vh] w-[95vw] sm:w-auto flex flex-col p-0">
+          <DialogHeader className="p-4 pb-2 border-b">
+            <DialogTitle className="text-base sm:text-lg">
                 session={chatSession}
                 onUpdateSession={handleUpdateChatSession}
               />
-            )}
+          <div className="flex-1 min-h-0 p-4">
           </div>
         </DialogContent>
       </Dialog>
     </div>
   )
-}
+}}
