@@ -37,6 +37,10 @@ export function DuckCard({ duck, onSelect }: DuckCardProps) {
     }
   }
 
+  const getActualPrice = () => {
+    return Math.round(duck.hourlyRate * duck.mood.priceModifier)
+  }
+
   return (
     <Card className="duck-float hover:shadow-lg transition-all duration-300 cursor-pointer group" onClick={() => onSelect(duck)}>
       <CardContent className="p-4 md:p-6">
