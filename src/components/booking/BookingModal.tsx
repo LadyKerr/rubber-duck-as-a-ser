@@ -88,31 +88,49 @@ export function BookingModal({ duck, sessionType, isOpen, onClose, onConfirm }: 
         <div className="space-y-6">
           <div className="space-y-2">
             <Label>Select Date</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !date && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarDays className="mr-2 h-4 w-4" />
-                  {date ? format(date, "PPP") : "Pick a date"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  disabled={(date) => 
-                    date < new Date() || date.getDay() === 0 || date.getDay() === 6
-                  }
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
+            <div className="space-y-2">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !date && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarDays className="mr-2 h-4 w-4" />
+                    {date ? format(date, "PPP") : "Pick a date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    disabled={(date) => {
+                      const today = new Date()
+                      today.setHours(0, 0, 0, 0)
+                      return date < today
+                    }}
+                    initialFocus
+                    className="rounded-md border"
+                  />
+                </PopoverContent>
+              </Popover>
+              <div className="text-xs text-muted-foreground text-center">
+                or
+              </div>
+              <Input
+                type="date"
+                value={date ? format(date, 'yyyy-MM-dd') : ''}
+                onChange={(e) => {
+                  const selectedDate = e.target.value ? new Date(e.target.value + 'T00:00:00') : undefined
+                  setDate(selectedDate)
+                }}
+                min={format(new Date(), 'yyyy-MM-dd')}
+                className="w-full"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
