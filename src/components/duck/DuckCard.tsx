@@ -28,18 +28,18 @@ export function DuckCard({ duck, onSelect }: DuckCardProps) {
 
   return (
     <Card className="duck-float hover:shadow-lg transition-all duration-300 cursor-pointer group" onClick={() => onSelect(duck)}>
-      <CardContent className="p-6">
-        <div className="flex items-start gap-4">
-          <div className="text-6xl group-hover:scale-110 transition-transform duration-300">
+      <CardContent className="p-4 md:p-6">
+        <div className="flex items-start gap-3 md:gap-4">
+          <div className="text-4xl md:text-6xl group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
             {duck.image}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
-              <h3 className="font-semibold text-lg truncate">{duck.name}</h3>
-              <div className={`w-2 h-2 rounded-full ${getAvailabilityColor(duck.availability)}`} />
+              <h3 className="font-semibold text-base md:text-lg truncate">{duck.name}</h3>
+              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${getAvailabilityColor(duck.availability)}`} />
             </div>
             
-            <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-muted-foreground mb-3">
               <div className="flex items-center gap-1">
                 <MapPin size={14} />
                 <span className="truncate">{duck.location}</span>
@@ -68,21 +68,22 @@ export function DuckCard({ duck, onSelect }: DuckCardProps) {
               )}
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-primary">${duck.hourlyRate}</span>
+                <span className="text-xl md:text-2xl font-bold text-primary">${duck.hourlyRate}</span>
                 <span className="text-sm text-muted-foreground">/hour</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Badge variant={duck.availability === 'available' ? 'default' : 'secondary'}>
+              <div className="flex items-center justify-between sm:justify-end gap-2">
+                <Badge variant={duck.availability === 'available' ? 'default' : 'secondary'} className="text-xs">
                   {getAvailabilityText(duck.availability)}
                 </Badge>
                 <Button 
                   size="sm" 
                   disabled={duck.availability !== 'available'}
-                  className="ml-2"
+                  className="text-xs md:text-sm"
                 >
-                  Book Session
+                  <span className="hidden sm:inline">Book Session</span>
+                  <span className="sm:hidden">Book</span>
                 </Button>
               </div>
             </div>

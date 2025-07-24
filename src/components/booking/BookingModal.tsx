@@ -77,15 +77,17 @@ export function BookingModal({ duck, sessionType, isOpen, onClose, onConfirm }: 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-sm sm:max-w-md mx-4">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <span className="text-2xl">{duck.image}</span>
-            Book {getSessionTypeTitle(sessionType)} with {duck.name}
+          <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <span className="text-xl sm:text-2xl">{duck.image}</span>
+            <span className="truncate">
+              Book {getSessionTypeTitle(sessionType)} with {duck.name}
+            </span>
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           <div className="space-y-2">
             <Label>Select Date</Label>
             <div className="space-y-2">
@@ -133,35 +135,37 @@ export function BookingModal({ duck, sessionType, isOpen, onClose, onConfirm }: 
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label>Select Time</Label>
-            <Select value={time} onValueChange={setTime}>
-              <SelectTrigger>
-                <SelectValue placeholder="Choose time slot" />
-              </SelectTrigger>
-              <SelectContent>
-                {timeSlots.map((slot) => (
-                  <SelectItem key={slot} value={slot}>
-                    {slot}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Select Time</Label>
+              <Select value={time} onValueChange={setTime}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Choose time slot" />
+                </SelectTrigger>
+                <SelectContent>
+                  {timeSlots.map((slot) => (
+                    <SelectItem key={slot} value={slot}>
+                      {slot}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-          <div className="space-y-2">
-            <Label>Duration (hours)</Label>
-            <Select value={duration} onValueChange={setDuration}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">1 hour</SelectItem>
-                <SelectItem value="2">2 hours</SelectItem>
-                <SelectItem value="3">3 hours</SelectItem>
-                <SelectItem value="4">4 hours</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="space-y-2">
+              <Label>Duration (hours)</Label>
+              <Select value={duration} onValueChange={setDuration}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1 hour</SelectItem>
+                  <SelectItem value="2">2 hours</SelectItem>
+                  <SelectItem value="3">3 hours</SelectItem>
+                  <SelectItem value="4">4 hours</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -171,13 +175,14 @@ export function BookingModal({ duck, sessionType, isOpen, onClose, onConfirm }: 
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
+              className="resize-none"
             />
           </div>
 
           <div className="border-t pt-4">
             <div className="flex justify-between items-center mb-4">
               <span className="text-muted-foreground">Total Cost:</span>
-              <span className="text-2xl font-bold text-primary">${totalCost}</span>
+              <span className="text-xl sm:text-2xl font-bold text-primary">${totalCost}</span>
             </div>
             
             <Button 

@@ -39,13 +39,13 @@ export function DuckProfile({ duck, isOpen, onClose, onBookSession }: DuckProfil
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-sm sm:max-w-2xl lg:max-w-4xl max-h-[90vh] overflow-y-auto mx-4">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-3">
-            <span className="text-4xl">{duck.image}</span>
-            <div>
-              <h2 className="text-2xl font-bold">{duck.name}</h2>
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <DialogTitle className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <span className="text-3xl sm:text-4xl">{duck.image}</span>
+            <div className="text-left">
+              <h2 className="text-xl sm:text-2xl font-bold">{duck.name}</h2>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <MapPin size={16} />
                   <span>{duck.location}</span>
@@ -65,27 +65,27 @@ export function DuckProfile({ duck, isOpen, onClose, onBookSession }: DuckProfil
 
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="specialties">Specialties</TabsTrigger>
-            <TabsTrigger value="book">Book Session</TabsTrigger>
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+            <TabsTrigger value="specialties" className="text-xs sm:text-sm">Skills</TabsTrigger>
+            <TabsTrigger value="book" className="text-xs sm:text-sm">Book</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-6">
+          <TabsContent value="overview" className="space-y-4 sm:space-y-6">
             <div>
               <h3 className="font-semibold mb-2">About {duck.name}</h3>
-              <p className="text-muted-foreground">{duck.description}</p>
+              <p className="text-sm sm:text-base text-muted-foreground">{duck.description}</p>
             </div>
 
             <div>
               <h3 className="font-semibold mb-2">Personality</h3>
-              <p className="text-muted-foreground">{duck.personality}</p>
+              <p className="text-sm sm:text-base text-muted-foreground">{duck.personality}</p>
             </div>
 
             <div>
               <h3 className="font-semibold mb-2">Favorite Problems to Solve</h3>
               <div className="flex flex-wrap gap-2">
                 {duck.favoriteProblems.map((problem) => (
-                  <Badge key={problem} variant="outline">
+                  <Badge key={problem} variant="outline" className="text-xs">
                     {problem}
                   </Badge>
                 ))}
@@ -96,10 +96,10 @@ export function DuckProfile({ duck, isOpen, onClose, onBookSession }: DuckProfil
           <TabsContent value="specialties" className="space-y-4">
             <div>
               <h3 className="font-semibold mb-4">Areas of Expertise</h3>
-              <div className="grid gap-3">
+              <div className="grid gap-2 sm:gap-3">
                 {duck.specialties.map((specialty) => (
-                  <div key={specialty} className="flex items-center gap-3 p-3 rounded-lg border">
-                    <Badge variant="secondary">{specialty}</Badge>
+                  <div key={specialty} className="flex items-center gap-3 p-2 sm:p-3 rounded-lg border">
+                    <Badge variant="secondary" className="text-xs sm:text-sm">{specialty}</Badge>
                   </div>
                 ))}
               </div>
@@ -111,7 +111,7 @@ export function DuckProfile({ duck, isOpen, onClose, onBookSession }: DuckProfil
               <Card className="cursor-pointer hover:shadow-md transition-shadow" 
                     onClick={() => onBookSession(duck, 'debugging')}>
                 <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-lg">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                     {getSessionTypeIcon('debugging')}
                     Debugging Session
                   </CardTitle>
@@ -120,11 +120,11 @@ export function DuckProfile({ duck, isOpen, onClose, onBookSession }: DuckProfil
                   <p className="text-muted-foreground text-sm mb-3">
                     {getSessionTypeDescription('debugging')}
                   </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-primary">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <span className="text-xl sm:text-2xl font-bold text-primary">
                       ${getSessionTypePrice('debugging')}/hour
                     </span>
-                    <Button>Book Now</Button>
+                    <Button className="w-full sm:w-auto">Book Now</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -132,7 +132,7 @@ export function DuckProfile({ duck, isOpen, onClose, onBookSession }: DuckProfil
               <Card className="cursor-pointer hover:shadow-md transition-shadow"
                     onClick={() => onBookSession(duck, 'career')}>
                 <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-lg">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                     {getSessionTypeIcon('career')}
                     Career Counseling
                   </CardTitle>
@@ -141,11 +141,11 @@ export function DuckProfile({ duck, isOpen, onClose, onBookSession }: DuckProfil
                   <p className="text-muted-foreground text-sm mb-3">
                     {getSessionTypeDescription('career')}
                   </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-primary">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <span className="text-xl sm:text-2xl font-bold text-primary">
                       ${getSessionTypePrice('career')}/hour
                     </span>
-                    <Button>Book Now</Button>
+                    <Button className="w-full sm:w-auto">Book Now</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -153,7 +153,7 @@ export function DuckProfile({ duck, isOpen, onClose, onBookSession }: DuckProfil
               <Card className="cursor-pointer hover:shadow-md transition-shadow"
                     onClick={() => onBookSession(duck, 'existential')}>
                 <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-lg">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                     {getSessionTypeIcon('existential')}
                     Existential Support
                   </CardTitle>
@@ -162,11 +162,11 @@ export function DuckProfile({ duck, isOpen, onClose, onBookSession }: DuckProfil
                   <p className="text-muted-foreground text-sm mb-3">
                     {getSessionTypeDescription('existential')}
                   </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-primary">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <span className="text-xl sm:text-2xl font-bold text-primary">
                       ${getSessionTypePrice('existential')}/hour
                     </span>
-                    <Button>Book Now</Button>
+                    <Button className="w-full sm:w-auto">Book Now</Button>
                   </div>
                 </CardContent>
               </Card>

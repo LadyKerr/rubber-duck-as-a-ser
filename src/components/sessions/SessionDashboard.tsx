@@ -35,13 +35,13 @@ export function SessionDashboard({ sessions, onJoinSession }: SessionDashboardPr
   const renderSession = (session: Session) => (
     <Card key={session.id} className="mb-4">
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
             <User size={20} />
             {session.duckName}
           </CardTitle>
           <Badge 
-            className={`${getSessionTypeColor(session.type)} text-white`}
+            className={`${getSessionTypeColor(session.type)} text-white self-start sm:self-auto`}
           >
             {getSessionTypeLabel(session.type)}
           </Badge>
@@ -49,7 +49,7 @@ export function SessionDashboard({ sessions, onJoinSession }: SessionDashboardPr
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Calendar size={16} />
               <span>{format(new Date(session.date), 'PPP')}</span>
@@ -73,17 +73,17 @@ export function SessionDashboard({ sessions, onJoinSession }: SessionDashboardPr
 
           <div className="flex justify-end gap-2">
             {session.status === 'upcoming' && (
-              <Button size="sm" onClick={() => onJoinSession(session)}>
+              <Button size="sm" onClick={() => onJoinSession(session)} className="text-xs sm:text-sm">
                 Join Session
               </Button>
             )}
             {session.status === 'active' && (
-              <Button size="sm" variant="destructive">
+              <Button size="sm" variant="destructive" className="text-xs sm:text-sm">
                 End Session
               </Button>
             )}
             {session.status === 'completed' && (
-              <Button size="sm" variant="outline">
+              <Button size="sm" variant="outline" className="text-xs sm:text-sm">
                 View Details
               </Button>
             )}
@@ -94,9 +94,9 @@ export function SessionDashboard({ sessions, onJoinSession }: SessionDashboardPr
   )
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">My Debugging Sessions</h2>
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <h2 className="text-xl md:text-2xl font-bold">My Debugging Sessions</h2>
         <div className="text-sm text-muted-foreground">
           {sessions.length} total sessions
         </div>
@@ -104,14 +104,17 @@ export function SessionDashboard({ sessions, onJoinSession }: SessionDashboardPr
 
       <Tabs defaultValue="upcoming" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="upcoming">
-            Upcoming ({upcomingSessions.length})
+          <TabsTrigger value="upcoming" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Upcoming ({upcomingSessions.length})</span>
+            <span className="sm:hidden">Up ({upcomingSessions.length})</span>
           </TabsTrigger>
-          <TabsTrigger value="active">
-            Active ({activeSessions.length})
+          <TabsTrigger value="active" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Active ({activeSessions.length})</span>
+            <span className="sm:hidden">Act ({activeSessions.length})</span>
           </TabsTrigger>
-          <TabsTrigger value="completed">
-            Completed ({completedSessions.length})
+          <TabsTrigger value="completed" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Completed ({completedSessions.length})</span>
+            <span className="sm:hidden">Done ({completedSessions.length})</span>
           </TabsTrigger>
         </TabsList>
 

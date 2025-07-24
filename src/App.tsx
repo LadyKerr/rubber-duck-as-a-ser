@@ -89,16 +89,16 @@ function App() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 py-4 md:py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="text-4xl">🦆</span>
+            <div className="flex items-center gap-2 md:gap-3">
+              <span className="text-3xl md:text-4xl">🦆</span>
               <div>
-                <h1 className="text-3xl font-bold text-primary">RDaaS</h1>
-                <p className="text-muted-foreground">Rubber Duck as a Service</p>
+                <h1 className="text-2xl md:text-3xl font-bold text-primary">RDaaS</h1>
+                <p className="text-sm md:text-base text-muted-foreground">Rubber Duck as a Service</p>
               </div>
             </div>
-            <div className="text-right">
+            <div className="text-right hidden sm:block">
               <p className="text-sm text-muted-foreground">Debug with confidence</p>
               <p className="text-xs text-muted-foreground">Premium debugging companions worldwide</p>
             </div>
@@ -106,17 +106,23 @@ function App() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4 md:py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 max-w-md">
-            <TabsTrigger value="marketplace">Duck Marketplace</TabsTrigger>
-            <TabsTrigger value="sessions">My Sessions ({sessions.length})</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto md:mx-0">
+            <TabsTrigger value="marketplace" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Duck Marketplace</span>
+              <span className="sm:hidden">Marketplace</span>
+            </TabsTrigger>
+            <TabsTrigger value="sessions" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">My Sessions ({sessions.length})</span>
+              <span className="sm:hidden">Sessions ({sessions.length})</span>
+            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="marketplace" className="space-y-6">
+          <TabsContent value="marketplace" className="space-y-4 md:space-y-6">
             <div className="text-center space-y-2">
-              <h2 className="text-2xl font-semibold">Find Your Perfect Debugging Companion</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <h2 className="text-xl md:text-2xl font-semibold">Find Your Perfect Debugging Companion</h2>
+              <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
                 Browse our global network of specialized rubber ducks, each with unique personalities 
                 and expertise to help you solve any coding challenge.
               </p>
@@ -134,7 +140,7 @@ function App() {
               }}
             />
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            <div className="grid gap-4 md:gap-6 lg:grid-cols-1 xl:grid-cols-2">
               {filteredDucks.map((duck) => (
                 <DuckCard
                   key={duck.id}
